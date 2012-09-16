@@ -30,6 +30,12 @@ public class TMXProperties<T extends TMXProperty> extends ArrayList<T> implement
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * Returns wether a TMXProperties object contains the specified TMXProperty, defined by name
+	 * @param pName Name of the property
+	 * @param pValue Value to test if matches the value of the property named by name
+	 * @return true if TMXProperties has the specified object and it has the specified value
+	 */
 	public boolean containsTMXProperty(final String pName, final String pValue) {
 		for(int i = this.size() - 1; i >= 0; i--) {
 			final T tmxProperty = this.get(i);
