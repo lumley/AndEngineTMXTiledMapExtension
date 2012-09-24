@@ -3,6 +3,8 @@ package org.andengine.extension.tmx;
 import java.util.ArrayList;
 
 import org.andengine.entity.Entity;
+import org.andengine.extension.tiledmapinterfaces.IGameLayer;
+import org.andengine.extension.tiledmapinterfaces.IGameMap;
 import org.andengine.extension.tmx.util.constants.TMXConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.SAXUtils;
@@ -17,7 +19,7 @@ import android.util.SparseArray;
  * @author Nicolas Gramlich
  * @since 19:38:11 - 20.07.2010
  */
-public class TMXTiledMap extends Entity implements TMXConstants {
+public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -174,6 +176,16 @@ public class TMXTiledMap extends Entity implements TMXConstants {
 			}
 			throw new IllegalArgumentException("No TextureRegion found for pGlobalTileID=" + pGlobalTileID);
 		}
+	}
+
+	@Override
+	public IGameLayer getLayer(int pLayer) {
+		return this.mTMXLayers.get(pLayer);
+	}
+
+	@Override
+	public int getLayerCount() {
+		return this.mTMXLayers.size();
 	}
 
 	// ===========================================================

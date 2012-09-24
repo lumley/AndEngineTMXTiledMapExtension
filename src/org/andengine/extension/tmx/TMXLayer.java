@@ -10,6 +10,8 @@ import java.util.zip.InflaterInputStream;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.batch.SpriteBatch;
+import org.andengine.extension.tiledmapinterfaces.IGameLayer;
+import org.andengine.extension.tiledmapinterfaces.IGameTile;
 import org.andengine.extension.tmx.TMXLoader.ITMXTilePropertiesListener;
 import org.andengine.extension.tmx.util.constants.TMXConstants;
 import org.andengine.opengl.texture.ITexture;
@@ -35,7 +37,7 @@ import android.opengl.GLES20;
  * @author Nicolas Gramlich
  * @since 20:27:31 - 20.07.2010
  */
-public class TMXLayer extends SpriteBatch implements TMXConstants {
+public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -350,6 +352,11 @@ public class TMXLayer extends SpriteBatch implements TMXConstants {
 		}
 
 		return lowestByte | (secondLowestByte <<  8) |(secondHighestByte << 16) | (highestByte << 24);
+	}
+
+	@Override
+	public IGameTile getTile(int pTileColumn, int pTileRow) {
+		return this.getTMXTile(pTileColumn, pTileRow);
 	}
 
 	// ===========================================================

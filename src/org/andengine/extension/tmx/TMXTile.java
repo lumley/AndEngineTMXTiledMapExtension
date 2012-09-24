@@ -1,5 +1,7 @@
 package org.andengine.extension.tmx;
 
+import org.andengine.extension.tiledmapinterfaces.IGameMap;
+import org.andengine.extension.tiledmapinterfaces.IGameTile;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 /**
@@ -9,7 +11,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
  * @author Nicolas Gramlich
  * @since 10:39:48 - 05.08.2010
  */
-public class TMXTile {
+public class TMXTile implements IGameTile{
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -92,6 +94,32 @@ public class TMXTile {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	@Override
+	public int getColumn() {
+		return this.mTileColumn;
+	}
+
+	@Override
+	public int getRow() {
+		return this.mTileRow;
+	}
+	
+	@Override
+	public boolean containsProperty(String pProperty, String pValue,
+			IGameMap pTiledMap) {
+		boolean hasAttribute = false;
+		try{
+			TMXTiledMap tiledMap = (TMXTiledMap) pTiledMap;
+			TMXProperties<TMXTileProperty> properties = tiledMap.getTMXTileProperties(this.mGlobalTileID);
+			
+			hasAttribute = properties.containsTMXProperty(pProperty, pValue);
+		}catch(Exception ex){
+			return false;
+		}
+		
+		return hasAttribute;
+	}
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================

@@ -23,4 +23,13 @@ public interface IGameTile {
 	 */
 	public int getRow();
 	
+	/**
+	 * Checks whether this GameTile contains the specified property
+	 * @param pProperty String with the name of the property to test
+	 * @param pValue String with the value to check
+	 * @param pTiledMap IGameMap to where this GameTile belongs
+	 * @return true if the tile contains the specified property with the specified value, false otherwise
+	 */
+	public boolean containsProperty(final String pProperty, final String pValue, final IGameMap pTiledMap);
+	
 }

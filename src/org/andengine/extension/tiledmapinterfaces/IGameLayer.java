@@ -19,4 +19,16 @@ public interface IGameLayer extends IEntity {
 	 * @return IGameTile to be retrieved
 	 */
 	public IGameTile getTile(final int pTileColumn, final int pTileRow);
+	
+	/**
+	 * Gets the number of columns
+	 * @return int with the number of columns
+	 */
+	public int getTileColumns();
+	
+	/**
+	 * Gets the number of rows
+	 * @return int with the number of rows
+	 */
+	public int getTileRows();
 }
