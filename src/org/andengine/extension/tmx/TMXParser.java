@@ -61,6 +61,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInData;
 	private boolean mInObjectGroup;
 	private boolean mInObject;
+	private boolean mInShape;
 
 	// ===========================================================
 	// Constructors
@@ -163,6 +164,22 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mInObject = true;
 			final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
 			tmxObjectGroups.get(tmxObjectGroups.size() - 1).addTMXObject(new TMXObject(pAttributes));
+		} else if(this.mInObject && (pLocalName.equals(TMXConstants.TAG_SHAPE_POLYGON) || 
+									 pLocalName.equals(TMXConstants.TAG_SHAPE_POLYLINE ))){
+			this.mInShape = true;
+			final ArrayList<TMXObjectGroup> tmxObjectGroups = this.mTMXTiledMap.getTMXObjectGroups();
+			final TMXObjectGroup lastTMXObjectGroup = tmxObjectGroups.get(tmxObjectGroups.size() - 1);
+
+			final ArrayList<TMXObject> tmxObjects = lastTMXObjectGroup.getTMXObjects();
+			final TMXObject lastTMXObject = tmxObjects.get(tmxObjects.size() - 1);
+			
+			String points = pAttributes.getValue("",TMXConstants.TAG_SHAPE_ATTRIBUTE_POINTS);
+			TMXShape shape = new TMXShape(pLocalName, lastTMXObject.getX(), lastTMXObject.getY()); 
+			for(String sPoint : points.split(" ") ){
+				String[] point = sPoint.split(",");
+				shape.addNextPoint(Integer.parseInt(point[0]), Integer.parseInt(point[1]));
+			}
+			lastTMXObject.setTMXShape(shape);
 		} else {
 			throw new TMXParseException("Unexpected start tag: '" + pLocalName + "'.");
 		}
@@ -206,6 +223,8 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 			this.mInObjectGroup = false;
 		} else if(pLocalName.equals(TMXConstants.TAG_OBJECT)){
 			this.mInObject = false;
+		} else if(pLocalName.equals(TMXConstants.TAG_SHAPE_POLYGON) || pLocalName.equals(TMXConstants.TAG_SHAPE_POLYLINE) ){
+			this.mInShape = false;
 		} else {
 			throw new TMXParseException("Unexpected end tag: '" + pLocalName + "'.");
 		}

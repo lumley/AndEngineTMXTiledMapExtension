@@ -1,5 +1,8 @@
 package org.andengine.extension.tmx;
 
+import java.util.ArrayList;
+
+import org.andengine.entity.particle.emitter.PointParticleEmitter;
 import org.andengine.extension.tmx.util.constants.TMXConstants;
 import org.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
@@ -27,6 +30,7 @@ public class TMXObject implements TMXConstants {
 	private final int mWidth;
 	private final int mHeight;
 	private final TMXProperties<TMXObjectProperty> mTMXObjectProperties = new TMXProperties<TMXObjectProperty>();
+	private TMXShape mTMXShape;
 
 	// ===========================================================
 	// Constructors
@@ -75,6 +79,14 @@ public class TMXObject implements TMXConstants {
 
 	public TMXProperties<TMXObjectProperty> getTMXObjectProperties() {
 		return this.mTMXObjectProperties;
+	}
+	
+	public TMXShape getmTMXShape() {
+		return mTMXShape;
+	}
+	
+	public void setTMXShape(TMXShape mTMXShape) {
+		this.mTMXShape = mTMXShape;
 	}
 
 	// ===========================================================
