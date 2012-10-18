@@ -61,6 +61,7 @@ public class TMXParser extends DefaultHandler implements TMXConstants {
 	private boolean mInData;
 	private boolean mInObjectGroup;
 	private boolean mInObject;
+	@SuppressWarnings("unused")
 	private boolean mInShape;
 
 	// ===========================================================

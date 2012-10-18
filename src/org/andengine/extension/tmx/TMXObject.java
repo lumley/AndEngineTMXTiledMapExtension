@@ -1,8 +1,5 @@
 package org.andengine.extension.tmx;
 
-import java.util.ArrayList;
-
-import org.andengine.entity.particle.emitter.PointParticleEmitter;
 import org.andengine.extension.tmx.util.constants.TMXConstants;
 import org.andengine.util.SAXUtils;
 import org.xml.sax.Attributes;
