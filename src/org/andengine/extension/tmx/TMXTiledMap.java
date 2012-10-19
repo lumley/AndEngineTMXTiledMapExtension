@@ -152,7 +152,8 @@ public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
 					return tmxTileSet.getTMXTilePropertiesFromGlobalTileID(pGlobalTileID);
 				}
 			}
-			throw new IllegalArgumentException("No TMXTileProperties found for pGlobalTileID=" + pGlobalTileID);
+			//throw new IllegalArgumentException("No TMXTileProperties found for pGlobalTileID=" + pGlobalTileID);
+			return null;
 		}
 	}
 
@@ -174,7 +175,8 @@ public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
 					return textureRegion;
 				}
 			}
-			throw new IllegalArgumentException("No TextureRegion found for pGlobalTileID=" + pGlobalTileID);
+			//throw new IllegalArgumentException("No TextureRegion found for pGlobalTileID=" + pGlobalTileID);
+			return null;
 		}
 	}
 

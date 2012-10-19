@@ -94,30 +94,64 @@ public class TMXTile implements IGameTile{
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameTile#getColumn()
+	 */
 	@Override
 	public int getColumn() {
 		return this.mTileColumn;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameTile#getRow()
+	 */
 	@Override
 	public int getRow() {
 		return this.mTileRow;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameTile#containsProperty(java.lang.String, java.lang.String, org.andengine.extension.tiledmapinterfaces.IGameMap)
+	 */
 	@Override
 	public boolean containsProperty(String pProperty, String pValue,
 			IGameMap pTiledMap) {
 		boolean hasAttribute = false;
-		try{
+		if(pTiledMap instanceof TMXTiledMap){
 			TMXTiledMap tiledMap = (TMXTiledMap) pTiledMap;
 			TMXProperties<TMXTileProperty> properties = tiledMap.getTMXTileProperties(this.mGlobalTileID);
 			
-			hasAttribute = properties.containsTMXProperty(pProperty, pValue);
-		}catch(Exception ex){
+			if(properties != null){
+				hasAttribute = properties.containsTMXProperty(pProperty, pValue);				
+			}
+			
+		}else{
 			return false;
 		}
 		
 		return hasAttribute;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameTile#getPropertyValue(java.lang.String, org.andengine.extension.tiledmapinterfaces.IGameMap)
+	 */
+	@Override
+	public String getPropertyValue(String pProperty, IGameMap pTiledMap) {
+		String result = null;
+		if(pTiledMap instanceof TMXTiledMap){
+			TMXTiledMap tiledMap = (TMXTiledMap) pTiledMap;
+			TMXProperties<TMXTileProperty> properties = tiledMap.getTMXTileProperties(this.mGlobalTileID);
+			
+			if(properties != null){
+				// FIXME: Do not get only index 0, but search on its properties!
+				TMXTileProperty tileProperty = properties.get(0);
+				if(tileProperty != null){
+					result = tileProperty.getValue();
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	// ===========================================================

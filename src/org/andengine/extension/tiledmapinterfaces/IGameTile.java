@@ -32,4 +32,12 @@ public interface IGameTile {
 	 */
 	public boolean containsProperty(final String pProperty, final String pValue, final IGameMap pTiledMap);
 	
+	/**
+	 * Gets the property that corresponds to the specified tile
+	 * @param pProperty String with the name of the property to test
+	 * @param pTiledMap IGameMap to where this GameTile belongs
+	 * @return String with the value of the property
+	 */
+	public String getPropertyValue(final String pProperty, final IGameMap pTiledMap);
+	
 }
