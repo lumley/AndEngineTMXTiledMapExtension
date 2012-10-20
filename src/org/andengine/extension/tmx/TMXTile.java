@@ -140,11 +140,16 @@ public class TMXTile implements IGameTile{
 		String result = null;
 		if(pTiledMap instanceof TMXTiledMap){
 			TMXTiledMap tiledMap = (TMXTiledMap) pTiledMap;
-			TMXProperties<TMXTileProperty> properties = tiledMap.getTMXTileProperties(this.mGlobalTileID);
+			TMXProperties<TMXTileProperty> tileProperties = tiledMap.getTMXTileProperties(this.mGlobalTileID);
 			
-			if(properties != null){
-				// FIXME: Do not get only index 0, but search on its properties!
-				TMXTileProperty tileProperty = properties.get(0);
+			if(tileProperties != null){
+				TMXTileProperty tileProperty = null;
+				for(TMXTileProperty tProperty : tileProperties){
+					if(tProperty.getName().compareTo(pProperty) == 0){
+						tileProperty = tProperty;
+						break;
+					}
+				}
 				if(tileProperty != null){
 					result = tileProperty.getValue();
 				}
