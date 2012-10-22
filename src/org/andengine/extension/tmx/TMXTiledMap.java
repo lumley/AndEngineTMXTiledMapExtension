@@ -13,10 +13,15 @@ import org.xml.sax.Attributes;
 import android.util.SparseArray;
 
 /**
+ * <p>
+ * A TMX Tiled Map is a map in TMX format. It is composed by TMX Layers
+ * </p>
+ * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Sergio Rodriguez Lumley
  * @since 19:38:11 - 20.07.2010
  */
 public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
@@ -180,11 +185,17 @@ public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameMap#getLayer(int)
+	 */
 	@Override
 	public IGameLayer getLayer(int pLayer) {
 		return this.mTMXLayers.get(pLayer);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.andengine.extension.tiledmapinterfaces.IGameMap#getLayerCount()
+	 */
 	@Override
 	public int getLayerCount() {
 		return this.mTMXLayers.size();

@@ -51,6 +51,18 @@ public interface IGameMap extends IEntity {
 	public int getTileHeight();
 	
 	/**
+	 * Gets the number of columns that the map has
+	 * @return int with the number of tiles as columns
+	 */
+	public int getTileColumns();
+	
+	/**
+	 * Gets the number of rows that the map has
+	 * @return int with the number of tiles as rows
+	 */
+	public int getTileRows();
+	
+	/**
 	 * Gets the texture region specified by parameters
 	 * @param pGraphicsTileID int that identifies the concrete texture region
 	 * @return ITextureRegion requested, null if not found

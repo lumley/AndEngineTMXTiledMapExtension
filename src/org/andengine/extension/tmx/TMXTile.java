@@ -5,10 +5,13 @@ import org.andengine.extension.tiledmapinterfaces.IGameTile;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 /**
+ * A TMXTile corresponds to a tile of a TMX Layer.
+ * 
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga Inc.
  * 
  * @author Nicolas Gramlich
+ * @author Sergio Rodriguez Lumley
  * @since 10:39:48 - 05.08.2010
  */
 public class TMXTile implements IGameTile{
@@ -44,6 +47,11 @@ public class TMXTile implements IGameTile{
 	// Getter & Setter
 	// ===========================================================
 
+	/**
+	 * A global tile ID is used to define what properties and what texture uses this tile
+	 * in a TMX Layer
+	 * @return
+	 */
 	public int getGlobalTileID() {
 		return this.mGlobalTileID;
 	}

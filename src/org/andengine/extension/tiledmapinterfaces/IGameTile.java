@@ -5,7 +5,7 @@ package org.andengine.extension.tiledmapinterfaces;
 
 
 /**
- * Escondite
+ * AndEngineTMXTiledMapExtension
  * @author Sergio Rodriguez Lumley
  * 16/09/2012
  */
