@@ -106,8 +106,10 @@ public class TMXTiledMap extends Entity implements TMXConstants, IGameMap {
 	}
 
 	/* package */ void addTMXLayer(final TMXLayer pTMXLayer) {
+		final int zIndex = this.mTMXLayers.size()*10;
 		this.mTMXLayers.add(pTMXLayer);
 		this.attachChild(pTMXLayer);
+		pTMXLayer.setZIndex(zIndex);
 	}
 
 	public ArrayList<TMXLayer> getTMXLayers() {
