@@ -54,7 +54,15 @@ public class TMXObjectGroup implements TMXConstants {
 		return this.mHeight;
 	}
 
-	void addTMXObject(final TMXObject pTMXObject) {
+	/**
+	 * Adds a TMX Objects to this TMXObjectGroup
+	 * 
+	 * <p><i>This method was changed on 20/11/2012 by Sergio Rodriguez Lumley to <b>public</b> from protected.
+	 * Theoretically only a class from this same package should be able to add tmx objects, but certain changes
+	 * were needed in order to create a TMXObjectGroup without a TMXTiledMap being actually loaded.</i></p>
+	 * @param pTMXObject {@link TMXObject} to be added
+	 */
+	public void addTMXObject(final TMXObject pTMXObject) {
 		this.mTMXObjects.add(pTMXObject);
 	}
 
