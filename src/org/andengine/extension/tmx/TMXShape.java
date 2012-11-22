@@ -32,14 +32,8 @@ public class TMXShape {
 	}
 	
 	public void addNextPoint(int X, int Y){
-		if( this.points.isEmpty() )
-			this.points.add(new TMXPoint(this.getX() + X,
-										 this.getY() + Y ));
-		else{
-			TMXPoint lastPoint = this.points.get(this.points.size()-1);
-			this.points.add(new TMXPoint(lastPoint.getX() + X,
-										 lastPoint.getY() + Y ));
-		}
+		this.points.add(new TMXPoint(this.getX() + X,
+				 this.getY() + Y ));
 	}
 
 }
