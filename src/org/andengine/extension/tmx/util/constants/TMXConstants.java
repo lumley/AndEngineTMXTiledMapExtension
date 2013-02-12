@@ -33,6 +33,17 @@ public interface TMXConstants {
 	public static final String TAG_TILESET_ATTRIBUTE_TILEHEIGHT = "tileheight";
 	public static final String TAG_TILESET_ATTRIBUTE_SPACING = "spacing";
 	public static final String TAG_TILESET_ATTRIBUTE_MARGIN = "margin";
+	
+	/**
+	 * Tag "tileoffset" is used to define a tile offset inside a tileset, it is used
+	 * inside a ".tsx" file to allow tiles to have an offset.
+	 * These tags have been added in 2013/01 by Sergio R. Lumley, in order to add
+	 * support to this functionallity as shown in TMX examples given by "bjorn" in
+	 * tiled github project: <a href="https://github.com/bjorn/tiled/blob/master/examples/perspective_walls.tsx">https://github.com/bjorn/tiled/blob/master/examples/perspective_walls.tsx</a>
+	 */
+	public static final String TAG_TILE_OFFSET = "tileoffset";
+	public static final String TAG_TILE_OFFSET_ATTRIBUTE_X = "x";
+	public static final String TAG_TILE_OFFSET_ATTRIBUTE_Y = "y";
 
 	public static final String TAG_IMAGE = "image";
 	public static final String TAG_IMAGE_ATTRIBUTE_SOURCE = "source";

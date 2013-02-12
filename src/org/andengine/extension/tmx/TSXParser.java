@@ -22,7 +22,7 @@ public class TSXParser extends DefaultHandler implements TMXConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
+	
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -86,6 +86,10 @@ public class TSXParser extends DefaultHandler implements TMXConstants {
 		} else if(pLocalName.equals(TMXConstants.TAG_PROPERTY)) {
 			this.mInProperty = true;
 			this.mTMXTileSet.addTMXTileProperty(this.mLastTileSetTileID, new TMXTileProperty(pAttributes));
+		} else if(pLocalName.equals(TMXConstants.TAG_TILE_OFFSET)){
+			this.mTMXTileSet.setTilesOffset(
+					SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_TILE_OFFSET_ATTRIBUTE_X),
+					SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_TILE_OFFSET_ATTRIBUTE_Y));
 		} else {
 			throw new TMXParseException("Unexpected start tag: '" + pLocalName + "'.");
 		}
@@ -103,6 +107,8 @@ public class TSXParser extends DefaultHandler implements TMXConstants {
 			this.mInProperties = false;
 		} else if(pLocalName.equals(TMXConstants.TAG_PROPERTY)) {
 			this.mInProperty = false;
+		} else if(pLocalName.equals(TMXConstants.TAG_TILE_OFFSET)){
+			// Do nothing
 		} else {
 			throw new TMXParseException("Unexpected end tag: '" + pLocalName + "'.");
 		}

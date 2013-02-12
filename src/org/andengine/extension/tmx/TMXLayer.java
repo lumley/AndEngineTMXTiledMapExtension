@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
@@ -311,11 +312,31 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 			}
 			final TMXTile tmxTile = new TMXTile(pGlobalTileID, tileColumn, tileRow, tileWidth, tileHeight, tmxTileTextureRegion);
 			tmxTiles[tileRow][tileColumn] = tmxTile;
+			
+			// Now we look for our TMXTileSet, the one we are using in this TMXLayer
+			// TODO: Find a way to make this more efficient and less... patchy (maybe adding a TMXTileSet to TMXLayer, instead of a textureRegion)
+			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
+			TMXTileSet tmxTileSet = null;
+			for(int i = tmxTileSets.size() - 1; i >= 0 && tmxTileSet == null; i--) {
+				final TMXTileSet tmxTileSet2 = tmxTileSets.get(i);
+				if(pGlobalTileID >= tmxTileSet2.getFirstGlobalTileID()) {
+					tmxTileSet = tmxTileSet2;
+				}
+			}
+			// -----------------------------------------------------------------
 
 			this.setIndex(this.getSpriteBatchIndex(tileColumn, tileRow));
 			final float tileX = this.getTileX(tileColumn);
 			final float tileY = this.getTileY(tileRow);
-			this.drawWithoutChecks(tmxTileTextureRegion, tileX, tileY, tileWidth, tileHeight, Color.WHITE_ABGR_PACKED_FLOAT);
+			
+			// Aha! This is the right place to add the offset of the tileset to each tile
+			final float tileOffsetX = (float)tmxTileSet.getXOffset();
+			final float tileOffsetY = (float)tmxTileSet.getYOffset();
+			
+			this.drawWithoutChecks(tmxTileTextureRegion,
+					tileX-tileOffsetX, tileY-tileOffsetY,
+					tileWidth+tileOffsetX*2, tileHeight+tileOffsetY*2,
+					Color.WHITE_ABGR_PACKED_FLOAT);
 
 			/* Notify the ITMXTilePropertiesListener if it exists. */
 			if(pTMXTilePropertyListener != null) {

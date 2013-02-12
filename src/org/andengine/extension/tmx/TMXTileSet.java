@@ -50,6 +50,11 @@ public class TMXTileSet implements TMXConstants {
 
 	private final int mSpacing;
 	private final int mMargin;
+	
+	// These attributes cannot be final because they have to be read after the creation of
+	// the TMXTileSet
+	private int mOffsetX; // Added to support tileoffset property
+	private int mOffsetY; // Added to support tileoffset property
 
 	private final SparseArray<TMXProperties<TMXTileProperty>> mTMXTileProperties = new SparseArray<TMXProperties<TMXTileProperty>>();
 
@@ -68,6 +73,8 @@ public class TMXTileSet implements TMXConstants {
 		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_TILESET_ATTRIBUTE_TILEHEIGHT);
 		this.mSpacing = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILESET_ATTRIBUTE_SPACING, 0);
 		this.mMargin = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILESET_ATTRIBUTE_MARGIN, 0);
+		this.mOffsetX = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILE_OFFSET_ATTRIBUTE_X, 0);
+		this.mOffsetY = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILE_OFFSET_ATTRIBUTE_Y, 0);
 
 		this.mTextureOptions = pTextureOptions;
 	}
@@ -133,6 +140,36 @@ public class TMXTileSet implements TMXConstants {
 
 	public SparseArray<TMXProperties<TMXTileProperty>> getTMXTileProperties() {
 		return this.mTMXTileProperties;
+	}
+	
+	/**
+	 * Sets the offset of the tileset to be applied on each tile when drawn, this is part
+	 * of the tileoffset support. Note that the offset values are applied inversely, so if
+	 * a tileset has 16px of x-offset, then it will be drawn 16px to the left hand.
+	 * @param pXOffset int with the horizontal offset
+	 * @param pYOffset int with the vertical offset
+	 */
+	public void setTilesOffset(final int pXOffset, final int pYOffset){
+		this.mOffsetX = pXOffset;
+		this.mOffsetY = pYOffset;
+	}
+	
+	/**
+	 * Gets the X offset. Note that the offset values are applied inversely, so if
+	 * a tileset has 16px of x-offset, then it will be drawn 16px to the left hand.
+	 * @return int with X offset
+	 */
+	public final int getXOffset(){
+		return this.mOffsetX;
+	}
+	
+	/**
+	 * Gets the Y offset. Note that the offset values are applied inversely, so if
+	 * a tileset has 16px of y-offset, then it will be drawn 16px to the top.
+	 * @return int with Y offset
+	 */
+	public final int getYOffset(){
+		return this.mOffsetY;
 	}
 
 	// ===========================================================
