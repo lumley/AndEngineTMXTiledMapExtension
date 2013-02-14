@@ -56,6 +56,7 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 
 	private int mTilesAdded;
 	private final int mGlobalTileIDsExpected;
+	private TMXTileSet mTMXTileSet;
 
 	private final TMXProperties<TMXLayerProperty> mTMXLayerProperties = new TMXProperties<TMXLayerProperty>();
 
