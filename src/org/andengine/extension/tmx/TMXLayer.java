@@ -56,7 +56,7 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 
 	private int mTilesAdded;
 	private final int mGlobalTileIDsExpected;
-	private TMXTileSet mTMXTileSet;
+	private TMXTileSet mTMXTileSet; // Tileset that we are using (instead of having only the SpriteBatch - Texture)
 
 	private final TMXProperties<TMXLayerProperty> mTMXLayerProperties = new TMXProperties<TMXLayerProperty>();
 
@@ -72,6 +72,7 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 		this.mTileColumns = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_LAYER_ATTRIBUTE_WIDTH);
 		this.mTileRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_LAYER_ATTRIBUTE_HEIGHT);
 		this.mTMXTiles = new TMXTile[this.mTileRows][this.mTileColumns];
+		this.mTMXTileSet = null; // Initially we do not know that tileSet we are using, this will be detected on our first draw
 
 		final int width = pTMXTiledMap.getTileWidth() * this.mTileColumns;
 		final int height = pTMXTiledMap.getTileHeight() * this.mTileRows;
@@ -315,14 +316,11 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 			tmxTiles[tileRow][tileColumn] = tmxTile;
 			
 			// Now we look for our TMXTileSet, the one we are using in this TMXLayer
-			// TODO: Find a way to make this more efficient and less... patchy (maybe adding a TMXTileSet to TMXLayer, instead of a textureRegion)
-			final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
-			TMXTileSet tmxTileSet = null;
-			for(int i = tmxTileSets.size() - 1; i >= 0 && tmxTileSet == null; i--) {
-				final TMXTileSet tmxTileSet2 = tmxTileSets.get(i);
-				if(pGlobalTileID >= tmxTileSet2.getFirstGlobalTileID()) {
-					tmxTileSet = tmxTileSet2;
-				}
+			// To make this more efficient and less... patchy, we store the TMXTileSet to accelerate accesses
+			TMXTileSet tmxTileSet = this.mTMXTileSet;
+			if(tmxTileSet == null){
+				tmxTileSet = this.findCurrentTMXTileSet(pGlobalTileID);
+				this.mTMXTileSet = tmxTileSet;
 			}
 			// -----------------------------------------------------------------
 
@@ -380,8 +378,58 @@ public class TMXLayer extends SpriteBatch implements TMXConstants, IGameLayer {
 	public IGameTile getTile(int pTileColumn, int pTileRow) {
 		return this.getTMXTile(pTileColumn, pTileRow);
 	}
+	
+	/**
+	 * Redraws a specific tile setting a new ID, it takes into account the offsets of the TMXTileSet
+	 * @param pTileColumn
+	 * @param pTileRow
+	 * @param pNewGlobalId
+	 */
+	public void redrawTileWithNewId(final int pTileColumn, final int pTileRow, final int pNewGlobalId){
+		final TMXTile tmxTile = this.getTMXTile(pTileColumn, pTileRow);
+		tmxTile.setGlobalTileID(this.mTMXTiledMap, pNewGlobalId);
+		int in = (tmxTile.getRow() * this.getTileColumns()) + tmxTile.getColumn();
+		this.setIndex( in );
+		
+		// Now we look for our TMXTileSet, the one we are using in this TMXLayer
+		// To make this more efficient and less... patchy, we store the TMXTileSet to accelerate accesses
+		TMXTileSet tmxTileSet = this.mTMXTileSet;
+		if(tmxTileSet == null){
+			tmxTileSet = this.findCurrentTMXTileSet(pNewGlobalId);
+			this.mTMXTileSet = tmxTileSet;
+		}
+		// -----------------------------------------------------------------
+		
+		// Aha! This is the right place to add the offset of the tileset to each tile
+		final float tileOffsetX = (float)tmxTileSet.getXOffset();
+		final float tileOffsetY = (float)tmxTileSet.getYOffset();
+		
+		this.drawWithoutChecks(tmxTile.getTextureRegion(),
+				this.getTileX(tmxTile.getTileColumn())-tileOffsetX, this.getTileY(tmxTile.getRow())-tileOffsetY,
+				tmxTile.getTileWidth()+tileOffsetX*2, tmxTile.getTileHeight()+tileOffsetY*2,
+				Color.WHITE_ABGR_PACKED_FLOAT);
+		this.submit();
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	/**
+	 * Finds the {@link TMXTileSet} that this {@link TMXLayer} is using
+	 * @param pGlobalTileId int The global Tile ID of a tile that belongs to the {@link TMXTileSet} (needed to find the {@link TMXTileSet} itself)
+	 * @return the {@link TMXTileSet} being used by this {@link TMXLayer} (as TMXLayers can only use one TMXTileSet, this is unique)
+	 */
+	private TMXTileSet findCurrentTMXTileSet(final int pGlobalTileId){
+		TMXTileSet tmxTileSet = null;
+		final ArrayList<TMXTileSet> tmxTileSets = this.mTMXTiledMap.getTMXTileSets();
+		
+		for(int i = tmxTileSets.size() - 1; i >= 0 && tmxTileSet == null; i--) {
+			final TMXTileSet tmxTileSet2 = tmxTileSets.get(i);
+			if(pGlobalTileId >= tmxTileSet2.getFirstGlobalTileID()) {
+				tmxTileSet = tmxTileSet2;
+			}
+		}
+		return tmxTileSet;
+	}
 }
